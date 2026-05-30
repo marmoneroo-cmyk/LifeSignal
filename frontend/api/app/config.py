@@ -13,11 +13,11 @@ DISCLAIMER = (
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", case_sensitive=False)
 
     # Empty -> fall back to a local SQLite file so the app runs with zero setup.
     database_url: str = ""
-    cors_origins: str = "http://localhost:3000"
+    cors_origins: str = "http://localhost:3000,http://localhost:3001"
 
     # Optional: enables Claude-powered report narration. Without it, the app
     # falls back to a deterministic rule-based summary (no key required).
@@ -29,8 +29,15 @@ class Settings(BaseSettings):
 
     @property
     def sqlalchemy_url(self) -> str:
-        if self.database_url:
-            return self.database_url
+        # Read DATABASE_URL directly from the environment as a safety net —
+        # pydantic_settings can occasionally miss vars in serverless runtimes.
+        url = self.database_url or os.environ.get("DATABASE_URL", "")
+        if url:
+            # Normalize Supabase / Heroku "postgres://" → SQLAlchemy's "postgresql://"
+            if url.startswith("postgres://"):
+                url = "postgresql://" + url[len("postgres://"):]
+            return url
+        # SQLite fallback for local dev only — fails on Vercel's read-only FS.
         db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "health_intel.db")
         return f"sqlite:///{db_path}"
 
