@@ -1,0 +1,16 @@
+fastapi>=0.118
+uvicorn[standard]>=0.34
+sqlalchemy>=2.0.36
+pydantic>=2.11
+pydantic-settings>=2.7
+python-multipart>=0.0.20
+# PDF text extraction + table parsing
+pdfplumber>=0.11.4
+# Excel (.xlsx) parsing for structured lab reports
+openpyxl>=3.1.5
+# Postgres driver (only needed if DATABASE_URL points at Postgres)
+psycopg2-binary>=2.9.10
+# Optional: only used when ANTHROPIC_API_KEY is set (report narration)
+anthropic>=0.40.0
+# Test / safety-eval harness
+pytest>=8.3.4
