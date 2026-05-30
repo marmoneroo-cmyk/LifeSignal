@@ -7,7 +7,10 @@ import type {
   UserOut,
 } from "./types";
 
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+// Empty default = same-origin relative paths. In production on Vercel the
+// /api/* requests hit the Python serverless function (vercel.json rewrites).
+// In dev, next.config.mjs proxies /api/* to the local uvicorn backend.
+const BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 const TOKEN_KEY = "ls_token";
 

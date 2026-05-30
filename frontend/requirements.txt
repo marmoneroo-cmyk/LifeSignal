@@ -1,0 +1,15 @@
+# Vercel Python serverless deps. Mirrors backend/requirements.txt but trimmed
+# for serverless cold-start size (no pytest/reportlab, only runtime).
+fastapi>=0.118
+pydantic>=2.11
+pydantic-settings>=2.7
+python-multipart>=0.0.20
+sqlalchemy>=2.0.36
+# PostgreSQL driver — Neon connection requires SSL (handled in URL)
+psycopg2-binary>=2.9.10
+# PDF text + table extraction
+pdfplumber>=0.11.4
+# Excel (.xlsx) parsing
+openpyxl>=3.1.5
+# Optional: Claude narration + chat. Imported lazily; safe if API key absent.
+anthropic>=0.40.0
