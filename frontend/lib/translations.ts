@@ -25,6 +25,7 @@ export const translations: Record<string, Entry> = {
   "nav.family": { he: "היסטוריה משפחתית", en: "Family History" },
   "nav.goals": { he: "מטרות בריאות", en: "Health Goals" },
   "nav.share": { he: "שיתוף עם רופא", en: "Share with Doctor" },
+  "nav.compare": { he: "השוואת תקופות", en: "Compare periods" },
 
   // --- Common ---
   "common.logout": { he: "התנתקות", en: "Log out" },

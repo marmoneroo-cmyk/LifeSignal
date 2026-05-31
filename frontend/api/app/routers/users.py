@@ -35,11 +35,21 @@ def get_user(user: User = Depends(accessible_profile)) -> UserOut:
 
 @router.post("/{user_id}/load-sample")
 def load_sample_data(
+    persona: str = "midlife_male",
     user: User = Depends(accessible_profile),
     db: Session = Depends(get_db),
 ) -> dict:
-    """Populate the active profile with realistic sample health data."""
-    return {"added": sample_data.populate(db, user)}
+    """Populate the active profile with realistic sample health data.
+
+    `persona` selects which demo profile to load (see sample_data.PERSONAS).
+    """
+    return {"added": sample_data.populate(db, user, persona=persona), "persona": persona}
+
+
+@router.get("/{user_id}/sample-personas")
+def sample_personas(lang: str = "he", _user: User = Depends(accessible_profile)) -> list[dict]:
+    """List available demo personas for the onboarding picker."""
+    return sample_data.list_personas(lang=lang)
 
 
 @router.get("/{user_id}/has-data")

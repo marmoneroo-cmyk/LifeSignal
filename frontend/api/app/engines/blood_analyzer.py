@@ -86,6 +86,7 @@ def build_trends(user: User, results: list[LabResult]) -> list[MarkerTrend]:
         rows.sort(key=lambda r: r.taken_on)
         points = [TrendPoint(taken_on=r.taken_on, value=r.value) for r in rows]
         latest_status = _classify(marker, rows[-1].value, user.sex)
+        rng = normal_range(marker, user.sex)
         trends.append(
             MarkerTrend(
                 marker=marker,
@@ -94,6 +95,8 @@ def build_trends(user: User, results: list[LabResult]) -> list[MarkerTrend]:
                 points=points,
                 direction=_direction(points),
                 status=latest_status,
+                ref_low=rng[0] if rng else None,
+                ref_high=rng[1] if rng else None,
             )
         )
     trends.sort(key=lambda t: {"abnormal": 0, "borderline": 1, "normal": 2}[t.status])

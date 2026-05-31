@@ -16,6 +16,7 @@ import {
   Sparkles,
   Target,
   Link2,
+  GitCompare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
@@ -31,6 +32,7 @@ export function Sidebar() {
     { href: "/chat",        label: t("nav.chat"),      icon: Sparkles },
     { href: "/copilot",     label: t("nav.copilot"),   icon: MessageCircleQuestion },
     { href: "/timeline",    label: t("nav.timeline"),  icon: Clock },
+    { href: "/compare",     label: t("nav.compare"),   icon: GitCompare },
     { href: "/upload",      label: t("nav.upload"),    icon: Upload },
     { href: "/labs",        label: t("nav.labs"),      icon: FlaskConical },
     { href: "/insurance",   label: t("nav.insurance"), icon: ShieldCheck },

@@ -12,12 +12,16 @@ import { useT } from "@/lib/i18n";
  * Offers two paths: load realistic sample data, or start adding own data.
  * Skips itself once the profile has any data. State is per-profile.
  */
+interface Persona { key: string; label: string }
+
 export function OnboardingModal() {
   const { activeProfileId } = useAuth();
   const { lang } = useT();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [pickingPersona, setPickingPersona] = useState(false);
+  const [personas, setPersonas] = useState<Persona[]>([]);
 
   useEffect(() => {
     if (!activeProfileId) return;
@@ -43,11 +47,22 @@ export function OnboardingModal() {
     setOpen(false);
   }
 
-  async function loadSample() {
+  async function openPersonaPicker() {
+    if (!activeProfileId) return;
+    try {
+      setPersonas(await api.samplePersonas(activeProfileId, lang));
+    } catch {
+      // Fall back to a single default persona key if listing fails.
+      setPersonas([{ key: "midlife_male", label: lang === "he" ? "פרופיל ברירת מחדל" : "Default profile" }]);
+    }
+    setPickingPersona(true);
+  }
+
+  async function loadSample(personaKey: string) {
     if (!activeProfileId) return;
     setBusy(true);
     try {
-      await api.loadSample(activeProfileId);
+      await api.loadSample(activeProfileId, personaKey);
       dismiss();
       router.refresh();
       // Hard reload to re-fetch the report with the new data
@@ -84,23 +99,48 @@ export function OnboardingModal() {
         </div>
 
         <div className="mt-5 space-y-3">
+          {pickingPersona ? (
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-slate-700">
+                {he ? "בחר פרופיל לדוגמה:" : "Pick a sample profile:"}
+              </p>
+              {personas.map((p) => (
+                <button
+                  key={p.key}
+                  onClick={() => loadSample(p.key)}
+                  disabled={busy}
+                  className="flex w-full items-center gap-2 rounded-xl border border-brand bg-brand-soft p-3 text-start text-sm font-medium text-brand-fg transition hover:bg-teal-100 disabled:opacity-50"
+                >
+                  {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                  {p.label}
+                </button>
+              ))}
+              <button
+                onClick={() => setPickingPersona(false)}
+                className="text-xs text-slate-400 hover:underline"
+              >
+                {he ? "← חזור" : "← back"}
+              </button>
+            </div>
+          ) : (
           <button
-            onClick={loadSample}
+            onClick={openPersonaPicker}
             disabled={busy}
             className="w-full rounded-xl border-2 border-brand bg-brand-soft p-4 text-start transition hover:bg-teal-100 disabled:opacity-50"
           >
             <div className="flex items-center gap-2">
-              {busy ? <Loader2 className="h-4 w-4 animate-spin text-brand" /> : <Sparkles className="h-4 w-4 text-brand" />}
+              <Sparkles className="h-4 w-4 text-brand" />
               <span className="font-semibold text-brand-fg">
                 {he ? "התחל עם נתוני דוגמה" : "Start with sample data"}
               </span>
             </div>
             <p className="mt-1 text-xs text-slate-600">
               {he
-                ? "נטען פרופיל מציאותי (בדיקות לאורך 3 שנים, ביטוחים, תרופות, היסטוריה משפחתית) שתוכל לחקור מיד."
-                : "Loads a realistic profile (3 years of labs, insurance, medications, family history) so you can explore right away."}
+                ? "בחר מתוך פרופילים מציאותיים שונים (גיל העמידה, אישה צעירה, מבוגר, ילד) לבחון את המערכת."
+                : "Pick from realistic personas (midlife, young female, senior, child) to explore the system."}
             </p>
           </button>
+          )}
 
           <button
             onClick={() => { dismiss(); router.push("/upload"); }}

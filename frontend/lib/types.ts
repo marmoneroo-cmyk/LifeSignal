@@ -20,6 +20,8 @@ export interface MarkerTrend {
   points: TrendPoint[];
   direction: "rising" | "falling" | "stable";
   status: "normal" | "borderline" | "abnormal";
+  ref_low?: number | null;
+  ref_high?: number | null;
 }
 
 export interface ScoreComponent {

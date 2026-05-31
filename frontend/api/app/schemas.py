@@ -107,6 +107,9 @@ class MarkerTrend(BaseModel):
     points: list[TrendPoint]
     direction: str  # "rising" | "falling" | "stable"
     status: str  # "normal" | "borderline" | "abnormal"
+    # Sex-adjusted reference range so the UI can draw the "normal" band.
+    ref_low: float | None = None
+    ref_high: float | None = None
 
 
 class ScoreComponent(BaseModel):

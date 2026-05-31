@@ -102,8 +102,15 @@ export const api = {
     req<{ labs: boolean; policies: boolean; medications: boolean; family: boolean; is_empty: boolean }>(
       `/api/users/${userId}/has-data`,
     ),
-  loadSample: (userId: number) =>
-    req<{ added: Record<string, number> }>(`/api/users/${userId}/load-sample`, { method: "POST" }),
+  loadSample: (userId: number, persona = "midlife_male") =>
+    req<{ added: Record<string, number>; persona: string }>(
+      `/api/users/${userId}/load-sample?persona=${encodeURIComponent(persona)}`,
+      { method: "POST" },
+    ),
+  samplePersonas: (userId: number, lang: "he" | "en") =>
+    req<{ key: string; label: string }[]>(
+      `/api/users/${userId}/sample-personas?lang=${lang}`,
+    ),
   chat: (userId: number, question: string) =>
     req<{ answer: string; generated_by: string; model: string | null; disclaimer: string }>(
       `/api/users/${userId}/chat`,

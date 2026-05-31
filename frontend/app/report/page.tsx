@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { FindingCard } from "@/components/FindingCard";
 import { Sparkline } from "@/components/Sparkline";
+import { MarkerChart } from "@/components/MarkerChart";
 import { Disclaimer } from "@/components/Disclaimer";
 import { NarrativeCard } from "@/components/NarrativeCard";
 import { useReport } from "@/lib/useReport";
@@ -61,25 +62,33 @@ export default function ReportPage() {
 
       <Card>
         <CardHeader><CardTitle>{t("report.labMarkers")}</CardTitle></CardHeader>
-        <CardContent className="space-y-1">
+        <CardContent className="space-y-4">
           {report.trends.length === 0 && (
             <p className="text-sm text-slate-500">{t("report.noLabData")}</p>
           )}
-          {report.trends.map((tr) => (
-            <div key={tr.marker} className="flex items-center justify-between gap-4 border-b border-slate-100 py-3 last:border-0">
-              <div className="min-w-0">
-                <p className="font-medium text-slate-800">{tr.label}</p>
-                <p className="text-xs text-slate-400">
-                  {t("report.latest")} {tr.points[tr.points.length - 1]?.value} {tr.unit} · {t(`dir.${tr.direction}`)}
-                </p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {report.trends.map((tr) => (
+              <div key={tr.marker} className="rounded-lg border border-slate-100 p-3">
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="truncate font-medium text-slate-800">{tr.label}</p>
+                    <p className="text-xs text-slate-400">
+                      {t("report.latest")} {tr.points[tr.points.length - 1]?.value} {tr.unit} · {t(`dir.${tr.direction}`)}
+                    </p>
+                  </div>
+                  <StatusBadge status={tr.status} />
+                </div>
+                <MarkerChart
+                  label={tr.label}
+                  unit={tr.unit}
+                  points={tr.points}
+                  status={tr.status}
+                  refLow={tr.ref_low}
+                  refHigh={tr.ref_high}
+                />
               </div>
-              <Sparkline
-                points={tr.points}
-                stroke={tr.status === "abnormal" ? "#dc2626" : tr.status === "borderline" ? "#d97706" : "#0d9488"}
-              />
-              <StatusBadge status={tr.status} />
-            </div>
-          ))}
+            ))}
+          </div>
         </CardContent>
       </Card>
 
