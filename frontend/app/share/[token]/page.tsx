@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { use, useEffect, useState } from "react";
-import { Activity, AlertTriangle, ShieldCheck } from "lucide-react";
+import { Activity, AlertTriangle, ShieldCheck, Printer } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PriorityBadge, StatusBadge } from "@/components/ui/badge";
 import { FindingCard } from "@/components/FindingCard";
@@ -75,7 +76,16 @@ export default function SharedReportPage({ params }: PageProps) {
             {he ? "צפייה בלבד · קישור זמני" : "Read-only · time-limited link"}
           </span>
         </div>
-        <LangToggle />
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/share/${token}/print`}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+          >
+            <Printer className="h-3.5 w-3.5" />
+            {he ? "גרסת הדפסה / PDF" : "Print / PDF version"}
+          </Link>
+          <LangToggle />
+        </div>
       </header>
 
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-6 md:px-8 md:py-10">
