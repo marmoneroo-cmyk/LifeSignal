@@ -14,6 +14,8 @@ import {
   Users,
   MessageCircleQuestion,
   Sparkles,
+  Target,
+  Link2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
@@ -34,6 +36,8 @@ export function Sidebar() {
     { href: "/insurance",   label: t("nav.insurance"), icon: ShieldCheck },
     { href: "/medications", label: t("nav.medications"), icon: Pill },
     { href: "/family",      label: t("nav.family"),    icon: Users },
+    { href: "/goals",       label: t("nav.goals"),     icon: Target },
+    { href: "/share",       label: t("nav.share"),     icon: Link2 },
   ];
 
   return (

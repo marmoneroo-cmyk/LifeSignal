@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { ChevronDown, LogOut, UserPlus } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n";
@@ -8,8 +9,16 @@ import { api } from "@/lib/api";
 import { Sidebar } from "@/components/Sidebar";
 import { LoginScreen } from "@/components/LoginScreen";
 
+// Path prefixes whose URL itself acts as the credential (server validates the
+// opaque token + expiry). These render WITHOUT the sidebar / profile bar.
+const PUBLIC_PREFIXES = ["/share/"];
+
 export function AuthGate({ children }: { children: React.ReactNode }) {
   const { ready, account } = useAuth();
+  const pathname = usePathname();
+
+  const isPublic = PUBLIC_PREFIXES.some((p) => pathname?.startsWith(p));
+  if (isPublic) return <>{children}</>;
 
   if (!ready)
     return (

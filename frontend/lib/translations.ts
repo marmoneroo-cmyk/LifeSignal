@@ -23,6 +23,8 @@ export const translations: Record<string, Entry> = {
   "nav.insurance": { he: "הוספת ביטוח", en: "Add Insurance" },
   "nav.medications": { he: "תרופות", en: "Medications" },
   "nav.family": { he: "היסטוריה משפחתית", en: "Family History" },
+  "nav.goals": { he: "מטרות בריאות", en: "Health Goals" },
+  "nav.share": { he: "שיתוף עם רופא", en: "Share with Doctor" },
 
   // --- Common ---
   "common.logout": { he: "התנתקות", en: "Log out" },

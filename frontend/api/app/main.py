@@ -11,10 +11,12 @@ from app.routers import (
     chat,
     documents,
     family,
+    goals,
     insurance,
     labs,
     medications,
     report,
+    share,
     users,
 )
 
@@ -48,6 +50,8 @@ app.include_router(documents.router)
 app.include_router(medications.router)
 app.include_router(family.router)
 app.include_router(chat.router)
+app.include_router(share.router)
+app.include_router(goals.router)
 
 
 @app.get("/api/health")

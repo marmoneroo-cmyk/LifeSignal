@@ -57,6 +57,27 @@ export interface AnnualReport {
   disclaimer: string;
 }
 
+export interface ShareLink {
+  token: string;
+  expires_at: string;
+  label: string;
+}
+
+export interface Goal {
+  id: number;
+  marker: string;
+  label: string;
+  unit: string;
+  target_value: number;
+  direction: "below" | "above";
+  deadline: string | null;
+  note: string;
+  latest_value: number | null;
+  latest_taken_on: string | null;
+  progress_pct: number;
+  achieved: boolean;
+}
+
 export const api = {
   register: (payload: Record<string, unknown>) =>
     req<TokenOut>("/api/auth/register", { method: "POST", body: JSON.stringify(payload) }),
@@ -88,6 +109,24 @@ export const api = {
       `/api/users/${userId}/chat`,
       { method: "POST", body: JSON.stringify({ question }) },
     ),
+  createShare: (userId: number, label: string, days_valid: number) =>
+    req<ShareLink>(`/api/users/${userId}/share`, {
+      method: "POST",
+      body: JSON.stringify({ label, days_valid }),
+    }),
+  listShares: (userId: number) => req<ShareLink[]>(`/api/users/${userId}/share`),
+  revokeShare: (userId: number, token: string) =>
+    req<void>(`/api/users/${userId}/share/${token}`, { method: "DELETE" }),
+  viewSharedReport: (token: string, lang: "he" | "en") =>
+    req<HealthReport>(`/api/share/${token}?lang=${lang}`),
+  listGoals: (userId: number) => req<Goal[]>(`/api/users/${userId}/goals`),
+  createGoal: (userId: number, payload: Record<string, unknown>) =>
+    req<Goal>(`/api/users/${userId}/goals`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+  deleteGoal: (userId: number, goalId: number) =>
+    req<void>(`/api/users/${userId}/goals/${goalId}`, { method: "DELETE" }),
   knownDrugs: (userId: number) =>
     req<{ key: string; label: string }[]>(`/api/users/${userId}/medications/known`),
   familyReference: (userId: number) =>

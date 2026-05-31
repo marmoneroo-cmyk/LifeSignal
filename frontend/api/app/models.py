@@ -110,3 +110,36 @@ class FamilyMember(Base):
     conditions: Mapped[str] = mapped_column(String(500), default="")  # csv tags
 
     user: Mapped[User] = relationship(back_populates="family_members")
+
+
+class ShareToken(Base):
+    """A time-limited token that grants read-only access to a profile's report.
+
+    Used to share a snapshot of the report with a clinician without requiring
+    them to register. The token is opaque (URL-safe random) and expires after
+    `expires_at`. Revoking = deletion.
+    """
+
+    __tablename__ = "share_tokens"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    token: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    label: Mapped[str] = mapped_column(String(120), default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    expires_at: Mapped[datetime] = mapped_column(DateTime)
+
+
+class HealthGoal(Base):
+    """A user-defined target for a marker, evaluated against the latest LabResult."""
+
+    __tablename__ = "health_goals"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    marker: Mapped[str] = mapped_column(String(40))
+    target_value: Mapped[float] = mapped_column(Float)
+    direction: Mapped[str] = mapped_column(String(10))  # "below" | "above"
+    deadline: Mapped[date | None] = mapped_column(Date, nullable=True)
+    note: Mapped[str] = mapped_column(String(200), default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
