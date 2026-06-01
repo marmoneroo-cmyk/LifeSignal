@@ -17,10 +17,13 @@ import {
   Target,
   Link2,
   GitCompare,
+  BarChart3,
+  Dna,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 import { LangToggle } from "@/components/LangToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -40,6 +43,8 @@ export function Sidebar() {
     { href: "/family",      label: t("nav.family"),    icon: Users },
     { href: "/goals",       label: t("nav.goals"),     icon: Target },
     { href: "/share",       label: t("nav.share"),     icon: Link2 },
+    { href: "/admin",       label: t("nav.admin"),     icon: BarChart3 },
+    { href: "/imports",     label: t("nav.imports"),   icon: Dna },
   ];
 
   return (
@@ -71,7 +76,10 @@ export function Sidebar() {
       </nav>
 
       <div className="px-5 pb-4 space-y-3">
-        <LangToggle />
+        <div className="flex items-center gap-2">
+          <LangToggle />
+          <ThemeToggle />
+        </div>
         <p className="text-[10px] leading-tight text-slate-400">{t("sidebar.disclaimer")}</p>
       </div>
     </aside>

@@ -6,11 +6,32 @@
   --bg: #f8fafc;
 }
 
+html.dark {
+  --bg: #0f172a; /* slate-900 */
+}
+
 body {
   background: var(--bg);
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
 }
+
+html.dark body {
+  color: #e2e8f0; /* slate-200 */
+}
+
+/* Dark-mode tweaks to commonly-used surfaces. Centralized so we don't have to
+   sprinkle `dark:` across every Card/input in the app. */
+html.dark .bg-white { background-color: #1e293b !important; }      /* slate-800 */
+html.dark .bg-slate-50 { background-color: #0f172a !important; }    /* slate-900 */
+html.dark .text-slate-800 { color: #f1f5f9 !important; }
+html.dark .text-slate-700 { color: #e2e8f0 !important; }
+html.dark .text-slate-600 { color: #cbd5e1 !important; }
+html.dark .text-slate-500 { color: #94a3b8 !important; }
+html.dark .text-slate-400 { color: #64748b !important; }
+html.dark .border-slate-200 { border-color: #334155 !important; }
+html.dark .border-slate-100 { border-color: #1e293b !important; }
+html.dark .border-slate-300 { border-color: #475569 !important; }
 
 /* Print / Save-as-PDF: hide app chrome, show only the report content. */
 @media print {

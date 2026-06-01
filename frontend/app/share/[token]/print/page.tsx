@@ -3,6 +3,7 @@
 import { use, useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useT } from "@/lib/i18n";
+import { MarkerChart } from "@/components/MarkerChart";
 import type { Finding, HealthReport } from "@/lib/types";
 
 interface PageProps {
@@ -168,6 +169,30 @@ export default function SharedReportPrintPage({ params }: PageProps) {
               })}
             </tbody>
           </table>
+        </section>
+      )}
+
+      {/* Trend charts — only markers with ≥2 data points, in a 2-column grid */}
+      {report.trends.some((t) => t.points.length >= 2) && (
+        <section className="mb-6 break-inside-avoid">
+          <h2 className="mb-2 border-b border-slate-300 pb-1 text-base font-bold">
+            {he ? "מגמות לאורך זמן" : "Trends over time"}
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            {report.trends.filter((t) => t.points.length >= 2).map((tr) => (
+              <div key={tr.marker} className="break-inside-avoid rounded border border-slate-200 p-2">
+                <p className="mb-1 truncate text-xs font-semibold">{tr.label}</p>
+                <MarkerChart
+                  label={tr.label}
+                  unit={tr.unit}
+                  points={tr.points}
+                  status={tr.status}
+                  refLow={tr.ref_low}
+                  refHigh={tr.ref_high}
+                />
+              </div>
+            ))}
+          </div>
         </section>
       )}
 

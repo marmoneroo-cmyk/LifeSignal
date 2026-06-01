@@ -3,6 +3,9 @@ import type { Config } from "tailwindcss";
 const config: Config = {
   // Logical-properties support: border-s, ps-*, ms-* work with dir="rtl" / dir="ltr".
 
+  // Dark mode triggered by a `class="dark"` on <html> (managed by ThemeProvider).
+  darkMode: "class",
+
   content: [
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",

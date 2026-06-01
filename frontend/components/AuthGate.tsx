@@ -8,6 +8,7 @@ import { useT } from "@/lib/i18n";
 import { api } from "@/lib/api";
 import { Sidebar } from "@/components/Sidebar";
 import { LoginScreen } from "@/components/LoginScreen";
+import { CommandPalette } from "@/components/CommandPalette";
 
 // Path prefixes whose URL itself acts as the credential (server validates the
 // opaque token + expiry). These render WITHOUT the sidebar / profile bar.
@@ -35,6 +36,7 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
         <ProfileBar />
         <div className="px-8 py-6">{children}</div>
       </main>
+      <CommandPalette />
     </div>
   );
 }

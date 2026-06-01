@@ -7,11 +7,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import DISCLAIMER, get_settings
 from app.db import Base, engine
 from app.routers import (
+    admin,
     auth,
+    calendar_export,
     chat,
     documents,
+    drug_search,
     family,
     goals,
+    imports,
     insurance,
     labs,
     medications,
@@ -52,6 +56,10 @@ app.include_router(family.router)
 app.include_router(chat.router)
 app.include_router(share.router)
 app.include_router(goals.router)
+app.include_router(calendar_export.router)
+app.include_router(admin.router)
+app.include_router(drug_search.router)
+app.include_router(imports.router)
 
 
 @app.get("/api/health")
