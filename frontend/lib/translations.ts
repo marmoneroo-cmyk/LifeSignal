@@ -49,7 +49,7 @@ export const translations: Record<string, Entry> = {
   "auth.password": { he: "סיסמה", en: "Password" },
   "auth.create": { he: "צור חשבון", en: "Create account" },
   "auth.pleaseWait": { he: "רגע…", en: "Please wait…" },
-  "auth.demoHint": { he: "הדגמה: demo@demo.com / demo1234", en: "Demo: demo@demo.com / demo1234" },
+  "auth.demoHint": { he: "", en: "" },
   "auth.error": { he: "משהו השתבש.", en: "Something went wrong." },
   "auth.guidelines": { he: "הנחיות:", en: "Guidelines:" },
   "profile.add": { he: "הוספת פרופיל משפחתי", en: "Add family profile" },

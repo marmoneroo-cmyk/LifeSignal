@@ -23,6 +23,8 @@ def run() -> None:
             print(f"Demo user already exists (id={existing.id}).")
             return
 
+        # No email/password — this profile is purely seed data for the engines;
+        # real users register via the UI.
         user = User(
             name="Demo User",
             sex="male",
@@ -30,8 +32,6 @@ def run() -> None:
             smoker=False,
             family_history="heart_disease,colon_cancer",
             region="il",
-            email="demo@demo.com",
-            password_hash=hash_password("demo1234"),
         )
         db.add(user)
         db.flush()
@@ -88,7 +88,6 @@ def run() -> None:
             f"Seeded demo user id={user.id}: {len(labs)} labs, {len(policies)} policies, "
             f"{len(meds)} medications, {len(family)} family members."
         )
-        print("Login with  email: demo@demo.com  password: demo1234")
     finally:
         db.close()
 
