@@ -27,7 +27,17 @@ from app.routers import (
 settings = get_settings()
 
 # Create tables on startup (fine for SQLite/MVP; use Alembic for Postgres prod).
-Base.metadata.create_all(bind=engine)
+# Wrapped so a transient DB connection failure on a Vercel cold start does not
+# crash the whole app (existing tables will still serve requests; missing ones
+# can be retried on the next cold start).
+import logging
+
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as exc:  # noqa: BLE001 — log and continue; don't kill the app
+    logging.getLogger("lifesignal").warning(
+        "Base.metadata.create_all failed at startup: %s", exc,
+    )
 
 app = FastAPI(
     title="Personal Health Intelligence API",
